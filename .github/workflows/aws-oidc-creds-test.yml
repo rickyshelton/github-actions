@@ -1,4 +1,4 @@
-name: Python package
+name: AWS OIDC creds test
 
 on: [push]
 
