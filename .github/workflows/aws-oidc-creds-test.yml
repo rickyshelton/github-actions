@@ -1,0 +1,26 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  deploy:
+    name: Upload to Amazon S3
+    runs-on: ubuntu-latest
+    # These permissions are needed to interact with GitHub's OIDC Token endpoint.
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+    - name: Configure AWS credentials from Test account
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        role-to-assume: arn:aws:iam::481312897799:role/github-actions-test-role
+        aws-region: eu-west-2
+        role-session-name: GitHubActionsSession
+    - name: Copy files to the test website with the AWS CLI
+      run: |
+        aws s3 ls ric-github-actions-test
+        echo "Hello World!" >> hello-world.txt
+        aws s3 cp hello-world.txt s3://my-s3-test-website-bucket
