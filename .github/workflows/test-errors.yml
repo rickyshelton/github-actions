@@ -1,0 +1,10 @@
+name: test-errors-workflow
+run-name: ${{ github.actor }} is learning GitHub Actions
+on: [push]
+jobs:
+  test-errors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: cat doesnt_exist.txt 2>/dev/null || true
+      - run: echo $?
